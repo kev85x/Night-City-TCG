@@ -1,5 +1,4 @@
-
-name: Construire Night City TCG APK
+name: Construire Cyberpunk 2077 TCG APK
 
 on:
   workflow_dispatch:
@@ -9,9 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Recuperer le projet
+      - name: Récupérer le projet
         uses: actions/checkout@v4
 
       - name: Installer Java 17
@@ -20,7 +18,7 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Installer Gradle
+      - name: Installer Gradle 8.7
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
@@ -30,16 +28,12 @@ jobs:
         with:
           packages: 'platform-tools'
 
-      - name: Decompresser le projet
-        run: unzip Night_City_TCG_GitHub_MAJ.zip
-
-      - name: Compiler le jeu
-        working-directory: Cyberpunk2077TCG_Android
+      - name: Compiler l'APK
         run: gradle :app:assembleDebug
 
-      - name: Recuperer le fichier APK
+      - name: Publier le fichier APK
         uses: actions/upload-artifact@v4
         with:
-          name: NightCityTCG-APK
-          path: Cyberpunk2077TCG_Android/app/build/outputs/apk/debug/app-debug.apk
+          name: Cyberpunk2077TCG-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
